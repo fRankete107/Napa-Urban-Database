@@ -165,12 +165,12 @@ public class FormularioConsultarStock extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String idStr = this.txtId.getText();
-        int idInt = Integer.parseInt(idStr);
+        //int idInt = Integer.parseInt(idStr);
         
         PrendaDao dao = new PrendaDao();
         ProveedoresDao daoP = new ProveedoresDao();
         Prenda prenda = new Prenda();
-        prenda = dao.buscarPorId(idInt);
+        prenda = dao.buscarPorId(idStr);
         String proveedor = daoP.buscarPorId(prenda.getIdProveedor());
         this.tablaResultado.setValueAt(prenda.getId(), 0, 0);
         this.tablaResultado.setValueAt(prenda.getNombre(), 0, 1);

@@ -40,7 +40,7 @@ public class PrendaDao {
                 Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "INSERT INTO `stock`(`id-stock`, `nombre`, `tipo`, `color`, `talle`, `id-proveedor`, `precio_unitario`, `precio_original`) VALUES (NULL,'"+prenda.getNombre()+"','"+prenda.getTipo()+"','"+prenda.getColor()+"','"+prenda.getTalle()+"','"+prenda.getIdProveedor()+"','"+prenda.getPrecioUnitario()+"', '"+prenda.getPrecioOriginal()+"')";
+            String sql = "INSERT INTO `stock`(`id-stock`, `nombre`, `tipo`, `color`, `talle`, `id-proveedor`, `precio_unitario`, `precio_original`) VALUES ('"+prenda.getId()+"','"+prenda.getNombre()+"','"+prenda.getTipo()+"','"+prenda.getColor()+"','"+prenda.getTalle()+"','"+prenda.getIdProveedor()+"','"+prenda.getPrecioUnitario()+"', '"+prenda.getPrecioOriginal()+"')";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             statement.execute(sql);
@@ -90,7 +90,7 @@ public class PrendaDao {
         return listado;
     }
     
-    public void eliminar(int id) {
+    public void eliminar(String id) {
         try {
             String baseDeDatos = "napaurbandb";
             String usuario = "root";
@@ -109,7 +109,7 @@ public class PrendaDao {
                 Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "DELETE FROM stock WHERE `id-stock`="+id+"";
+            String sql = "DELETE FROM stock WHERE `id-stock`='"+id+"'";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             statement.executeUpdate(sql);
@@ -117,7 +117,7 @@ public class PrendaDao {
             Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
     }}
     
-    public Prenda buscarPorId (int id) {
+    public Prenda buscarPorId (String id) {
         try {
             String baseDeDatos = "napaurbandb";
             String usuario = "root";
@@ -135,14 +135,14 @@ public class PrendaDao {
                 Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "SELECT * FROM `stock` WHERE `id-stock`="+id+"";
+            String sql = "SELECT * FROM `stock` WHERE `id-stock`='"+id+"'";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             ResultSet resultado = statement.executeQuery(sql);
             
             resultado.next();
             Prenda prnd = new Prenda();
-            prnd.setId(resultado.getInt(1));
+            prnd.setId(resultado.getString(1));
             prnd.setNombre(resultado.getString("nombre"));
             prnd.setTipo(resultado.getString("tipo"));
             prnd.setColor(resultado.getString("color"));
@@ -157,7 +157,7 @@ public class PrendaDao {
         }
         return null;
     }
-    public int buscarPrecioUnitarioPorId(int id) {
+    public int buscarPrecioUnitarioPorId(String id) {
         try {
             String baseDeDatos = "napaurbandb";
             String usuario = "root";
@@ -175,7 +175,7 @@ public class PrendaDao {
                 Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "SELECT `precio_unitario` FROM `stock` WHERE `id-stock`="+id+"";
+            String sql = "SELECT `precio_unitario` FROM `stock` WHERE `id-stock`='"+id+"'";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             ResultSet resultado = statement.executeQuery(sql);
@@ -190,7 +190,7 @@ public class PrendaDao {
         return -1;
     }
     
-    public String buscarNombrePorId(int id) {
+    public String buscarNombrePorId(String id) {
         try {
             String baseDeDatos = "napaurbandb";
             String usuario = "root";
@@ -208,7 +208,7 @@ public class PrendaDao {
                 Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "SELECT `nombre` FROM `stock` WHERE `id-stock`="+id+"";
+            String sql = "SELECT `nombre` FROM `stock` WHERE `id-stock`='"+id+"'";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             ResultSet resultado = statement.executeQuery(sql);
@@ -248,7 +248,7 @@ public class PrendaDao {
             
             resultado.next();
             Prenda prnd = new Prenda();
-            prnd.setId(resultado.getInt(1));
+            prnd.setId(resultado.getString(1));
             prnd.setNombre(resultado.getString("nombre"));
             prnd.setTipo(resultado.getString("tipo"));
             prnd.setColor(resultado.getString("color"));
@@ -262,5 +262,36 @@ public class PrendaDao {
             JOptionPane.showMessageDialog(null,"Ese ID no existe :(");
         }
         return null;
+    }
+    public boolean existeEsteId (String id) {
+        try {
+            String baseDeDatos = "napaurbandb";
+            String usuario = "root";
+            String password = "";
+            String host = "localhost";
+            String puerto = "3306";
+            String driver = "com.mysql.jdbc.Driver";
+            String conexionUrl = "jdbc:mysql://" + host + ":" + puerto + "/" + baseDeDatos + "?useSLL=false";
+            
+            Connection conexion = null;
+            try {
+                Class.forName(driver);
+                conexion = DriverManager.getConnection(conexionUrl, usuario, password);
+            } catch (Exception ex) {
+                Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            String sql = "SELECT * FROM `stock` WHERE `id-stock`='"+id+"'";
+            System.out.println(sql);
+            Statement statement = conexion.createStatement();
+            ResultSet resultado = statement.executeQuery(sql);
+            
+            resultado.next();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(PrendaDao.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,"Ese ID no existe :(");
+        }
+        return false;
     }
 }

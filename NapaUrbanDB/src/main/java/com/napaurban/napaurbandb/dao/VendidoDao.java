@@ -38,7 +38,7 @@ public class VendidoDao {
                 Logger.getLogger(VendidoDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "INSERT INTO `vendido`(`id`, `nombre`, `tipo`, `color`, `talle`, `id-proveedor`, `precio_unitario`, `precio_original`) VALUES ("+prenda.getId()+",'"+prenda.getNombre()+"','"+prenda.getTipo()+"','"+prenda.getColor()+"','"+prenda.getTalle()+"','"+prenda.getIdProveedor()+"','"+prenda.getPrecioUnitario()+"', '"+prenda.getPrecioOriginal()+"')";
+            String sql = "INSERT INTO `vendido`(`id`, `nombre`, `tipo`, `color`, `talle`, `id-proveedor`, `precio_unitario`, `precio_original`) VALUES ('"+prenda.getId()+"','"+prenda.getNombre()+"','"+prenda.getTipo()+"','"+prenda.getColor()+"','"+prenda.getTalle()+"','"+prenda.getIdProveedor()+"','"+prenda.getPrecioUnitario()+"', '"+prenda.getPrecioOriginal()+"')";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             statement.execute(sql);
@@ -88,7 +88,7 @@ public class VendidoDao {
         return res;
     }
     
-    public void borrar(int id) {
+    public void borrar(String id) {
         try {
             String baseDeDatos = "napaurbandb";
             String usuario = "root";
@@ -116,8 +116,8 @@ public class VendidoDao {
             JOptionPane.showMessageDialog(null, "No encontramos esa prenda :(");
         }
     }
-    public int buscarPorNombre(String nombre) {
-        int res = -1;
+    public String buscarPorNombre(String nombre) {
+        String res = "-1";
         try {
             String baseDeDatos = "napaurbandb";
             String usuario = "root";
@@ -141,7 +141,7 @@ public class VendidoDao {
             Statement statement = conexion.createStatement();
             ResultSet resultado = statement.executeQuery(sql);
             resultado.next();
-            res = resultado.getInt(1);
+            res = resultado.getString(1);
         } catch (SQLException ex) {
             Logger.getLogger(VendidoDao.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "No se encontró esa prenda :(");
@@ -149,7 +149,7 @@ public class VendidoDao {
         return res;
     }
     
-    public Prenda buscarPorId(int id) {
+    public Prenda buscarPorId(String id) {
         Prenda prnd = new Prenda();
         try {
             String baseDeDatos = "napaurbandb";
@@ -169,12 +169,12 @@ public class VendidoDao {
                 Logger.getLogger(VendidoDao.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            String sql = "SELECT * FROM vendido WHERE id="+id+"";
+            String sql = "SELECT * FROM vendido WHERE id='"+id+"'";
             System.out.println(sql);
             Statement statement = conexion.createStatement();
             ResultSet resultado = statement.executeQuery(sql);
             resultado.next();
-            prnd.setId(resultado.getInt(1));
+            prnd.setId(resultado.getString(1));
             prnd.setNombre(resultado.getString("nombre"));
             prnd.setTipo(resultado.getString("tipo"));
             prnd.setColor(resultado.getString("color"));

@@ -32,16 +32,16 @@ public class FormularioVenta extends javax.swing.JFrame {
         initComponents();
     }
     
-    public int[] getIdArr() {
-        int[] idArr = new int[10];
-        int idInt;
+    public String[] getIdArr() {
+        String[] idArr = new String[10];
+        //int idInt;
         String val = (String)this.txtIdPrenda.getText();
         String[] valArr = val.split("\\s+");
         int ii = 0;
         
         for(String idStr : valArr) {
-            idInt = Integer.parseInt(idStr);
-            idArr[ii] = idInt;
+            //idInt = Integer.parseInt(idStr);
+            idArr[ii] = idStr;
             ii++;
         }
         return idArr;
@@ -259,8 +259,8 @@ public class FormularioVenta extends javax.swing.JFrame {
         int c = 0;
         
         for(String idStr : valArr) {
-            int idInt = Integer.parseInt(idStr);
-            prnd = daoPRND.buscarPorId(idInt);
+            //int idInt = Integer.parseInt(idStr);
+            prnd = daoPRND.buscarPorId(idStr);
             prndPU = prnd.getPrecioUnitario();
             prndPUArr[ii] = prndPU;
             ii++;
@@ -296,7 +296,7 @@ public class FormularioVenta extends javax.swing.JFrame {
         VendedoraDao daoV = new VendedoraDao();
         int idV = daoV.buscarPorNombre(this.txtVendedora.getSelectedItem().toString());
         int idC = daoC.buscarPorEmail(this.txtEmail.getText());
-        int[] idParr = getIdArr();
+        String[] idParr = getIdArr();
         int PU = 0;
         String str_c = this.txtCantidad.getText();
         int c = Integer.parseInt(str_c);
@@ -304,8 +304,8 @@ public class FormularioVenta extends javax.swing.JFrame {
         int PF = Integer.parseInt(str_PF);
         String nomP;
         
-        for(int idP : idParr){
-            if (idP != 0){
+        for(String idP : idParr){
+            if (idP != null){
                 PU = daoPr.buscarPrecioUnitarioPorId(idP);
                 nomP = daoPr.buscarNombrePorId(idP);
                 System.out.println(PU);
@@ -330,9 +330,15 @@ public class FormularioVenta extends javax.swing.JFrame {
                 daoPr.eliminar(idP);
                 daoC.sumarCompra(idC);
                 daoC.sumarGasto(idC, PF);
+                if (daoPr.existeEsteId(idP)) {
+                    JOptionPane.showMessageDialog(null, "Venta completada!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un error computando la venta :(");
+                }
                 }
                 
             }
+        
         
     }//GEN-LAST:event_btnVenderActionPerformed
 

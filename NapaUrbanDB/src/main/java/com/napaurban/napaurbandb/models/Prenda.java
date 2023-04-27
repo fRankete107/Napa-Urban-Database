@@ -9,7 +9,7 @@ package com.napaurban.napaurbandb.models;
  * @author 54113
  */
 public class Prenda {
-    private int id;
+    private String id;
     private String nombre;
     private String tipo;
     private String color;
@@ -18,11 +18,11 @@ public class Prenda {
     private int precioUnitario;
     private int precioOriginal;
     
-    public int getId() {
+    public String getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     

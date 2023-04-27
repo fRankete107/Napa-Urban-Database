@@ -36,7 +36,7 @@ public class FormularioDevolucion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nombre del producto devuelto:");
+        jLabel1.setText("Id del producto devuelto:");
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,7 +90,7 @@ public class FormularioDevolucion extends javax.swing.JFrame {
         Prenda prenda = new Prenda();
         VendidoDao daoV = new VendidoDao();
         
-        int id = daoV.buscarPorNombre(this.txtNombre.getText());
+        String id = daoV.buscarPorNombre(this.txtNombre.getText());
         prenda = daoV.buscarPorId(id);
         daoV.borrar(id);
         daoP.agregar(prenda);
